@@ -28,6 +28,39 @@ int main(){
 	
 	total1 = preco1 * quantidade1;
 
+	printf ("\n");
+	printf ("Produto 2\n");
+	printf ("Nome: ");
+	scanf ("%s",nome2);
+
+	printf("Codigo: ");
+	scanf("%d", &codigo2);
+
+	printf("Preco: ");
+	scanf ("%f", &preco2);
+
+	printf ("Quantidade: ");
+	scanf ("%d", &quantidade2);
+
+	total2 = preco2 *quantidade2;
+
+	printf ("\n");
+	printf ("Produto 3\n");
+	printf ("Nome: ");
+	scanf ("%s", nome3);
+
+	printf("Codigo: ");
+	scanf("%d", &codigo3);
+	
+	printf("Preco: ");
+	scanf ("%f", &preco3);
+	
+	printf ("Quantidade: ");
+	scanf ("%d", &quantidade3);
+
+	total3 = preco3 * quantidade3;
+
+
 	
 	printf("\n================\n");
 	printf("RESUMO DO ESTOQUE\n");
@@ -37,6 +70,20 @@ int main(){
 	printf("Codigo: %d \n", codigo1);
 	printf("Produto: %s \n",nome1);
 	printf("Valor em Estoque: R$%.2f \n",total1);
+	printf ("\n");
+
+
+	printf ("Codigo: %d \n", codigo2);
+	printf ("Produto: %s \n", nome2);
+	printf ("Valor em Estoque: R$%.2f \n", total2);
+	printf ("\n");
+
+	printf ("Codigo: %d \n", codigo3);
+	printf ("Produto: %s \n", nome3);
+	printf ("Valor em Estoque: R$%.2f \n", total3);
+	printf ("\n");
+
+	
 	
 	return 0;
 }

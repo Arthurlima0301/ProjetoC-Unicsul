@@ -130,5 +130,12 @@ int main() {
     printf("Quantidade: %d\n", quantidade5);
     printf("Valor em Estoque: R$%.2f\n", total5);
 
-    return 0;
+    printf("\n====================\n");
+    printf("RESUMO DO ESTOQUE\n");
+    printf("====================\n");
+
+    float totalEstoque = total1 + total2 + total3 + total4 + total5;
+    printf("\nValor Total em Estoque: R$%.2f\n", totalEstoque);
+
+    return 0; 
 }

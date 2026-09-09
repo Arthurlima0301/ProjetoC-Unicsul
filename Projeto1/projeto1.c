@@ -11,7 +11,6 @@ int main() {
     printf("===============================\n");
     printf("SISTEMA DE CONTROLE DE PRODUTOS\n");
     printf("===============================\n");
-
     printf("\nProduto 1\n");
 
     printf("Nome: ");

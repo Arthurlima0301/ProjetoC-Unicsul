@@ -33,7 +33,7 @@ int main() {
                 printf("\n\n====================\n");
                 printf("CADASTRAR PRODUTO\n");
                 printf("====================\n");
-                printf("Informações do Produto\n");
+                printf("Informacoes do Produto\n");
 
                 // Capturar Código antes
                 int codigo;
@@ -45,7 +45,7 @@ int main() {
                 // Verificar se Código Existe
                 for(int i = 0; i <= ultimoProduto; i++){
                     if(produtos[i].codigo == codigo){
-                        printf("\nCódigo já existe\n");
+                        printf("\nCodigo ja existe\n");
                         codigoExiste = true;
                         break;
                     }
@@ -78,21 +78,30 @@ int main() {
                 printf("\n====================\n");
                 printf("CONSULTAR PRODUTO\n");
                 printf("====================\n");
+
+                int codigoConsulta;
+                bool produtoEncontrado = false;
+
+                printf("Digite o codigo do produto: ");
+                scanf ("%d", &codigoConsulta);
                 
-                printf("\nProduto \n");
-                printf("Nome: ");
-                printf("%s \n", produtos[0].nome);
+                for (int i = 0; i < ultimoProduto ; i++) {
 
-                printf("Codigo: ");
-                printf("%d \n", produtos[0].codigo);
+                    if (codigoConsulta == produtos[i].codigo) {
+                        printf("Nome: %s\n", produtos[i].nome);
+                        printf ("Codigo: %d\n", produtos[i].codigo);
+                        printf("Preco: %.2f\n", produtos[i].preco);
+                        printf ("Quantidade: %d\n", produtos[i].quantidade);
+                        printf ("Valor total: %.2f\n", produtos[i].valorTotal);
+                        produtoEncontrado = true;
+                    }
+                }
+                
+                if (produtoEncontrado == false ) {
+                    printf ("Produto Nao encontrado!\n");
+                }  
 
-                printf("Preco: ");
-                printf("%f \n", produtos[0].preco);
-
-                printf("Quantidade: ");
-                printf("%d \n", produtos[0].quantidade);
-
- 				option = 6;
+ 			
                 break;
 
             case 3:

@@ -13,6 +13,7 @@ int main() {
     struct Produto produtos[10];
 
     int option = 6;
+    int ultimoProduto = 0;
 
     while (option != 0) {
         printf("===============================\n");
@@ -29,28 +30,50 @@ int main() {
 
         switch (option) {
             case 1:
-                printf("\n====================\n");
+                printf("\n\n====================\n");
                 printf("CADASTRAR PRODUTO\n");
                 printf("====================\n");
-                
-                printf("\nProduto \n");
-                printf("Nome: ");
-                scanf("%s", &produtos[0].nome);
+                printf("Informações do Produto\n");
+
+                // Capturar Código antes
+                int codigo;
+                bool codigoExiste = false;
 
                 printf("Codigo: ");
-                scanf("%d", &produtos[0].codigo);
+                scanf("%d", &codigo);
+
+                // Verificar se Código Existe
+                for(int i = 0; i <= ultimoProduto; i++){
+                    if(produtos[i].codigo == codigo){
+                        printf("\nCódigo já existe\n");
+                        codigoExiste = true;
+                        break;
+                    }
+                }
+                
+                // Parar o Case se código existir
+                if(codigoExiste == true){
+                    codigoExiste = false;
+                    codigo = 0;
+                    break;
+                }else{
+                    produtos[ultimoProduto].codigo = codigo;
+                }
+
+                printf("Nome: ");
+                scanf("%s", &produtos[ultimoProduto].nome);
 
                 printf("Preco: ");
-                scanf("%f", &produtos[0].preco);
+                scanf("%f", &produtos[ultimoProduto].preco);
 
                 printf("Quantidade: ");
-                scanf("%d", &produtos[0].quantidade);
+                scanf("%d", &produtos[ultimoProduto].quantidade);
 
-                produtos[0].valorTotal = produtos[0].preco * produtos[0].quantidade;
+                produtos[ultimoProduto].valorTotal = produtos[ultimoProduto].preco * produtos[ultimoProduto].quantidade;
+
+                ultimoProduto++;
                 
-                option = 6;
 				break;
-				
             case 2:
                 printf("\n====================\n");
                 printf("CONSULTAR PRODUTO\n");
@@ -104,8 +127,7 @@ int main() {
 
             case 5:
                 printf("\n SAIDA \n");
-                
-                option = 6;
+                option = 0;
                 break;
         }
     }

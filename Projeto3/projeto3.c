@@ -168,12 +168,10 @@ void valorEstoque(struct Produto produtos[], int quantidadeProdutos)
  * Salvar Produtos
  */
 void salvarProdutos(struct Produto produtos[], int quantidadeProdutos) {
-    // Abre o arquivo para escrita. Se não existir, será criado.
-    // O modo "w" substitui o conteúdo anterior do arquivo.
+    
     FILE *arquivo = fopen("produtos.txt", "w");
 
     
-    // Verifica se houve erro ao abrir o arquivo.
     if (arquivo == NULL)
     {
         printf("Erro ao abrir o arquivo!\n");
@@ -183,15 +181,12 @@ void salvarProdutos(struct Produto produtos[], int quantidadeProdutos) {
     // Percorre todos os produtos cadastrados no array.
     for (int i = 0; i < quantidadeProdutos; i++) 
     {
-        // Grava os dados do produto separados por ponto e vírgula.
-        // Cada produto será gravado em uma linha do arquivo.
         fprintf(arquivo, "%d;%s;%.2f;%d\n",
         produtos[i].codigo,
         produtos[i].nome,
         produtos[i].preco,
         produtos[i].quantidade);
     }
-    // Fecha o arquivo após terminar a gravação.
     fclose(arquivo);
     printf("Produtos salvos com sucesso!\n");
 
@@ -202,10 +197,8 @@ void salvarProdutos(struct Produto produtos[], int quantidadeProdutos) {
  */    
 void carregarProdutos(struct Produto produtos[], int *quantidadeProdutos)
 {
-    // Abre o arquivo para leitura.
     FILE *arquivo = fopen("produtos.txt", "r");
 
-    // Verifica se houve erro ao abrir o arquivo.
     if (arquivo == NULL)
     {
         printf("Erro ao abrir o arquivo!\n");
@@ -228,11 +221,9 @@ void carregarProdutos(struct Produto produtos[], int *quantidadeProdutos)
             produtos[*quantidadeProdutos].preco *
             produtos[*quantidadeProdutos].quantidade;
 
-        // Avanca para a proxima posicao do array.
         (*quantidadeProdutos)++;
     }
 
-    // Fecha o arquivo depois de terminar a leitura.
     fclose(arquivo);
 
     printf("Produtos carregados com sucesso!\n");

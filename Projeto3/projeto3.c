@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 /**
  * Sructs de Produto
@@ -166,12 +167,70 @@ void valorEstoque(struct Produto produtos[], int quantidadeProdutos)
 /**
  * Salvar Produtos
  */
-void salvarProdutos() {}
+void salvarProdutos(struct Produto produtos[], int quantidadeProdutos) {
+    
+    FILE *arquivo = fopen("produtos.txt", "w");
 
+    
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+
+    // Percorre todos os produtos cadastrados no array.
+    for (int i = 0; i < quantidadeProdutos; i++) 
+    {
+        fprintf(arquivo, "%d;%s;%.2f;%d\n",
+        produtos[i].codigo,
+        produtos[i].nome,
+        produtos[i].preco,
+        produtos[i].quantidade);
+    }
+    fclose(arquivo);
+    printf("Produtos salvos com sucesso!\n");
+
+}
+    
 /**
  *  Carregar Produtos
- */
-void carregarProdutos() {}
+ */    
+void carregarProdutos(struct Produto produtos[], int *quantidadeProdutos)
+{
+    FILE *arquivo = fopen("produtos.txt", "r");
+
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+
+    // Reinicia a quantidade antes de carregar os produtos.
+    *quantidadeProdutos = 0;
+
+
+    while (*quantidadeProdutos < MAX_PRODUTOS &&
+           fscanf(arquivo, "%d;%49[^;];%f;%d",
+                  &produtos[*quantidadeProdutos].codigo,
+                  produtos[*quantidadeProdutos].nome,
+                  &produtos[*quantidadeProdutos].preco,
+                  &produtos[*quantidadeProdutos].quantidade) == 4)
+    {
+        // Calcula o valor total do produto.
+        produtos[*quantidadeProdutos].valorTotal =
+            produtos[*quantidadeProdutos].preco *
+            produtos[*quantidadeProdutos].quantidade;
+
+        (*quantidadeProdutos)++;
+    }
+
+    fclose(arquivo);
+
+    printf("Produtos carregados com sucesso!\n");
+}
+
+
+
 
 int main()
 {
@@ -181,16 +240,18 @@ int main()
     int option = 0;
     int quantidadeProdutos = 0;
 
-    while (option != 5)
+    while (option != 7)
     {
         printf("===============================\n");
         printf("SISTEMA DE CONTROLE DE PRODUTOS\n");
         printf("===============================\n");
-        printf("1 - Cadastrar Produtos \n");
-        printf("2 - Consultar Produtos \n");
-        printf("3 - Verificar Estoque \n");
-        printf("4 - Calcular Total Estoque \n");
-        printf("5 - Sair \n");
+        printf("1 - Cadastrar Produtos\n");
+        printf("2 - Listar Produtos\n");
+        printf("3 - Consultar Produtos\n");
+        printf("4 - Salvar Produtos\n");
+        printf("5 - Carregar Produtos\n");
+        printf("6 - Calcular Total Estoque\n");
+        printf("7 - Sair\n");
 
         printf("Selecione a opcao: ");
         scanf("%d", &option);
@@ -207,31 +268,48 @@ int main()
             break;
         case 2:
             printf("\n====================\n");
-            printf("CONSULTAR PRODUTO\n");
-            printf("====================\n");
-
-            consultarProduto(produtos, quantidadeProdutos);
-            break;
-
-        case 3:
-        {
-            printf("\n====================\n");
-            printf("VERIFICAR ESTOQUE\n");
+            printf("LISTAR PRODUTOS\n");
             printf("====================\n");
 
             verificarEstoque(produtos, quantidadeProdutos);
             break;
-        }
-        case 4:
-        {
+
+        case 3:
+        
             printf("\n====================\n");
-            printf("TOTAL ESTOQUE\n");
+            printf("CONSULTAR PRODUTOS\n");
             printf("====================\n");
 
-            valorEstoque(produtos, quantidadeProdutos);
+            consultarProduto(produtos, quantidadeProdutos);
             break;
-        }
-        case 5:
+        
+        case 4:
+        
+            printf("\n====================\n");
+            printf("SALVAR PRODUTOS\n");
+            printf("====================\n");
+
+            salvarProdutos(produtos, quantidadeProdutos);
+            break;
+        
+       case 5:
+            printf("\n====================\n");
+            printf("CARREGAR PRODUTOS \n");
+            printf("====================\n");
+
+            carregarProdutos(produtos, &quantidadeProdutos);
+            break;
+
+       
+       case 6:
+        printf("\n====================\n");
+        printf("TOTAL DO ESTOQUE \n");
+        printf("\n====================\n");
+        valorEstoque(produtos, quantidadeProdutos);
+        break;
+
+       
+        case 7:
             printf("\n====================\n");
             printf("SAIDA\n");
             printf("====================\n");
@@ -241,7 +319,7 @@ int main()
 
         default:
             printf("\nOpcao invalida!\n");
-            printf("Escolha uma opcao de 1 a 5.\n");
+            printf("Escolha uma opcao de 1 a 7.\n");
             break;
         }
     }

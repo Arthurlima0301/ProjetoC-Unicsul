@@ -1,19 +1,107 @@
 #include <stdio.h>
 
+/**
+ * Sructs de Produto
+ */
+struct Produto
+{
+    char nome[50];
+    int codigo;
+    float preco;
+    int quantidade;
+    float valorTotal;
+};
+
+#define MAX_PRODUTOS 10
+
+/**
+ * Validar Código
+ */
+bool validarCodigo(int codigoConsulta, struct Produto produtos[], int quantidadeProdutos)
+{
+    // Percorre os Array de produtos e se encontrar imprime as informações
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+        if (codigoConsulta == produtos[i].codigo)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Cadastrar Produtos
+ */
+void cadastrarProduto(struct Produto produtos[], int *quantidadeProdutos)
+{
+    // Capturar Código
+    int codigo;
+    bool codigoExiste = false;
+
+    printf("Codigo: ");
+    scanf("%d", &codigo);
+
+    // Verifica se o código existe
+    codigoExiste = validarCodigo(codigo, produtos, *quantidadeProdutos);
+
+    if (codigoExiste == true)
+    {
+        printf("Código Já Existe!\n");
+        return;
+    }
+
+    // Cadastrar Infomações
+    produtos[*quantidadeProdutos].codigo = codigo;
+
+    printf("Nome: ");
+    scanf("%s", &produtos[*quantidadeProdutos].nome);
+
+    printf("Preco: ");
+    scanf("%f", &produtos[*quantidadeProdutos].preco);
+
+    printf("Quantidade: ");
+    scanf("%d", &produtos[*quantidadeProdutos].quantidade);
+
+    // Realiza a Multiplicação para obter o Valor Total
+    produtos[*quantidadeProdutos].valorTotal = produtos[*quantidadeProdutos].preco * produtos[*quantidadeProdutos].quantidade;
+
+    // Adiciona mais um a quantidade de produtos
+    (*quantidadeProdutos)++;
+
+    return;
+}
+
+/**
+ *  Consultar Produto
+ */
+void consultarProduto() {}
+
+/**
+ *  Listar Produtos
+ */
+void verificarEstoque() {}
+
+/**
+ * Calcular Valor do Estoque
+ */
+void valorEstoque() {}
+
+/**
+ * Salvar Produtos
+ */
+void salvarProdutos() {}
+
+/**
+ *  Carregar Produtos
+ */
+void carregarProdutos() {}
+
 int main()
 {
-    // Struct
-    struct Produto
-    {
-        char nome[50];
-        int codigo;
-        float preco;
-        int quantidade;
-        float valorTotal;
-    };
-
     // Array de Structs
-    struct Produto produtos[10];
+    struct Produto produtos[MAX_PRODUTOS];
 
     int option = 0;
     int quantidadeProdutos = 0;
@@ -40,49 +128,7 @@ int main()
             printf("====================\n");
             printf("Informacoes do Produto\n");
 
-            // Capturar Código antes
-            int codigo;
-            bool codigoExiste = false;
-
-            printf("Codigo: ");
-            scanf("%d", &codigo);
-
-            // Verificar se Código Existe
-            for (int i = 0; i <= quantidadeProdutos; i++)
-            {
-                if (produtos[i].codigo == codigo)
-                {
-                    printf("\nCodigo ja existe\n");
-                    codigoExiste = true;
-                    break;
-                }
-            }
-
-            // Parar o Case se código existir
-            if (codigoExiste == true)
-            {
-                codigoExiste = false;
-                codigo = 0;
-                break;
-            }
-            else
-            {
-                produtos[quantidadeProdutos].codigo = codigo;
-            }
-
-            printf("Nome: ");
-            scanf("%s", &produtos[quantidadeProdutos].nome);
-
-            printf("Preco: ");
-            scanf("%f", &produtos[quantidadeProdutos].preco);
-
-            printf("Quantidade: ");
-            scanf("%d", &produtos[quantidadeProdutos].quantidade);
-
-            produtos[quantidadeProdutos].valorTotal = produtos[quantidadeProdutos].preco * produtos[quantidadeProdutos].quantidade;
-
-            quantidadeProdutos++;
-
+            cadastrarProduto(produtos, &quantidadeProdutos);
             break;
         case 2:
             printf("\n====================\n");
@@ -178,6 +224,6 @@ int main()
             break;
         }
     }
-    
+
     return 0;
 }

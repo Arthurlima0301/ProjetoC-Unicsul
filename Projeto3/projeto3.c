@@ -107,12 +107,45 @@ void consultarProduto(struct Produto produtos[], int quantidadeProdutos)
 /**
  *  Listar Produtos
  */
-void verificarEstoque() {}
+void verificarEstoque(struct Produto produtos[], int quantidadeProdutos)
+{
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+        printf("\nProduto: %s\n", produtos[i].nome);
+        printf("Codigo: %d\n", produtos[i].codigo);
+        printf("Preco: R$ %.2f\n", produtos[i].preco);
+        printf("Quantidade: %d\n", produtos[i].quantidade);
+        printf("Valor em Estoque: R$ %.2f\n", produtos[i].valorTotal);
+
+        if (produtos[i].quantidade == 0)
+        {
+            printf("ESTOQUE ESGOTADO\n");
+        }
+        else if (produtos[i].quantidade <= 5)
+        {
+            printf("ESTOQUE BAIXO\n");
+        }
+        else
+        {
+            printf("ESTOQUE NORMAL\n");
+        }
+    }
+    
+    return;
+}
 
 /**
  * Calcular Valor do Estoque
  */
-void valorEstoque() {}
+void valorEstoque()
+{
+}
 
 /**
  * Salvar Produtos
@@ -169,31 +202,8 @@ int main()
             printf("\n====================\n");
             printf("VERIFICAR ESTOQUE\n");
             printf("====================\n");
-            if (quantidadeProdutos == 0)
-            {
-                printf("Nenhum produto cadastrado.\n");
-                break;
-            }
-            for (int i = 0; i < quantidadeProdutos; i++)
-            {
-                printf("\nProduto: %s\n", produtos[i].nome);
-                printf("Codigo: %d\n", produtos[i].codigo);
-                printf("Preco: R$ %.2f\n", produtos[i].preco);
-                printf("Quantidade: %d\n", produtos[i].quantidade);
-                printf("Valor em Estoque: R$ %.2f\n", produtos[i].valorTotal);
-                if (produtos[i].quantidade == 0)
-                {
-                    printf("ESTOQUE ESGOTADO\n");
-                }
-                else if (produtos[i].quantidade <= 5)
-                {
-                    printf("ESTOQUE BAIXO\n");
-                }
-                else
-                {
-                    printf("ESTOQUE NORMAL\n");
-                }
-            }
+
+            verificarEstoque(produtos, quantidadeProdutos);
             break;
         }
         case 4:

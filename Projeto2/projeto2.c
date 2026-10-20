@@ -1,7 +1,7 @@
+
 #include <stdio.h>
 
 int main() {
-
     struct Produto {
         char nome[50];
         int codigo;
@@ -12,131 +12,190 @@ int main() {
 
     struct Produto produtos[10];
 
-    int option = 6;
-    int ultimoProduto = 0;
+    int option = 0;
+    int quantidadeProdutos = 0;
 
-    while (option != 0) {
+    while (option != 5) {
         printf("===============================\n");
         printf("SISTEMA DE CONTROLE DE PRODUTOS\n");
         printf("===============================\n");
-        printf("1 - Cadastrar Produtos \n");
-        printf("2 - Consultar Produtos \n");
-        printf("3 - Verificar Estoque \n");
-        printf("4 - Calcular Total Estoque \n");
-        printf("5 - Sair \n");
+        printf("1 - Cadastrar Produtos\n");
+        printf("2 - Consultar Produtos\n");
+        printf("3 - Verificar Estoque\n");
+        printf("4 - Calcular Total Estoque\n");
+        printf("5 - Sair\n");
 
-        printf("Selecione a opcao: ");
+        printf("\nSelecione a opcao: ");
         scanf("%d", &option);
 
         switch (option) {
-            case 1:
-                printf("\n\n====================\n");
-                printf("CADASTRAR PRODUTO\n");
+            case 1: {
+                int quantidadeCadastrar;
+
+                printf("\n====================\n");
+                printf("CADASTRAR PRODUTOS\n");
                 printf("====================\n");
-                printf("Informacoes do Produto\n");
 
-                // Capturar Código antes
-                int codigo;
-                bool codigoExiste = false;
-
-                printf("Codigo: ");
-                scanf("%d", &codigo);
-
-                // Verificar se Código Existe
-                for(int i = 0; i <= ultimoProduto; i++){
-                    if(produtos[i].codigo == codigo){
-                        printf("\nCodigo ja existe\n");
-                        codigoExiste = true;
-                        break;
-                    }
-                }
-                
-                // Parar o Case se código existir
-                if(codigoExiste == true){
-                    codigoExiste = false;
-                    codigo = 0;
+                if (quantidadeProdutos >= 10) {
+                    printf("Limite de produtos atingido!\n");
                     break;
-                }else{
-                    produtos[ultimoProduto].codigo = codigo;
                 }
 
-                printf("Nome: ");
-                scanf("%s", &produtos[ultimoProduto].nome);
+                printf("Quantos produtos deseja cadastrar? ");
+                scanf("%d", &quantidadeCadastrar);
 
-                printf("Preco: ");
-                scanf("%f", &produtos[ultimoProduto].preco);
+                if (quantidadeCadastrar <= 0) {
+                    printf("Quantidade invalida!\n");
+                    break;
+                }
 
-                printf("Quantidade: ");
-                scanf("%d", &produtos[ultimoProduto].quantidade);
+                if (quantidadeProdutos + quantidadeCadastrar > 10) {
+                    printf(
+                        "Voce pode cadastrar apenas %d produto(s).\n",
+                        10 - quantidadeProdutos
+                    );
+                    break;
+                }
 
-                produtos[ultimoProduto].valorTotal = produtos[ultimoProduto].preco * produtos[ultimoProduto].quantidade;
+                for (int i = 0; i < quantidadeCadastrar; i++) {
+                    printf("\nProduto %d\n", quantidadeProdutos + 1);
 
-                ultimoProduto++;
-                
-				break;
-            case 2:
+                    printf("Nome: ");
+                    scanf("%s", produtos[quantidadeProdutos].nome);
+
+                    printf("Codigo: ");
+                    scanf("%d", &produtos[quantidadeProdutos].codigo);
+
+                    printf("Preco: ");
+                    scanf("%f", &produtos[quantidadeProdutos].preco);
+
+                    printf("Quantidade: ");
+                    scanf("%d", &produtos[quantidadeProdutos].quantidade);
+
+                    if (produtos[quantidadeProdutos].quantidade < 0) {
+                        printf("Quantidade invalida!\n");
+                        continue;
+                    }
+
+                    produtos[quantidadeProdutos].valorTotal =
+                        produtos[quantidadeProdutos].preco *
+                        produtos[quantidadeProdutos].quantidade;
+
+                    quantidadeProdutos++;
+
+                    printf("Produto cadastrado com sucesso!\n");
+                }
+
+                break;
+            }
+
+            case 2: {
+                int codigoBusca;
+                int encontrado = 0;
+
                 printf("\n====================\n");
                 printf("CONSULTAR PRODUTO\n");
                 printf("====================\n");
 
-                int codigoConsulta;
-                bool produtoEncontrado = false;
+                if (quantidadeProdutos == 0) {
+                    printf("Nenhum produto cadastrado.\n");
+                    break;
+                }
 
                 printf("Digite o codigo do produto: ");
-                scanf ("%d", &codigoConsulta);
-                
-                for (int i = 0; i < ultimoProduto ; i++) {
+                scanf("%d", &codigoBusca);
 
-                    if (codigoConsulta == produtos[i].codigo) {
+                for (int i = 0; i < quantidadeProdutos; i++) {
+                    if (produtos[i].codigo == codigoBusca) {
+                        printf("\nProduto encontrado!\n");
                         printf("Nome: %s\n", produtos[i].nome);
-                        printf ("Codigo: %d\n", produtos[i].codigo);
-                        printf("Preco: %.2f\n", produtos[i].preco);
-                        printf ("Quantidade: %d\n", produtos[i].quantidade);
-                        printf ("Valor total: %.2f\n", produtos[i].valorTotal);
-                        produtoEncontrado = true;
+                        printf("Codigo: %d\n", produtos[i].codigo);
+                        printf("Preco: R$ %.2f\n", produtos[i].preco);
+                        printf("Quantidade: %d\n", produtos[i].quantidade);
+                        printf(
+                            "Valor em Estoque: R$ %.2f\n",
+                            produtos[i].valorTotal
+                        );
+
+                        encontrado = 1;
+                        break;
                     }
                 }
-                
-                if (produtoEncontrado == false ) {
-                    printf ("Produto Nao encontrado!\n");
-                }  
 
- 			
+                if (encontrado == 0) {
+                    printf("Produto nao encontrado.\n");
+                }
+
                 break;
+            }
 
-            case 3:
+            case 3: {
                 printf("\n====================\n");
                 printf("VERIFICAR ESTOQUE\n");
                 printf("====================\n");
 
-                /*
-                for(int i = 0, produtos.lenght <= i, i++){
-                    printf("\nProduto \n");
-                    printf("Codigo: %d\n", codigo);
-                    printf("Produto: %s\n", nome);
-                    printf("Preco: R$%.2f\n", preco);
-                    printf("Quantidade: %d\n", quantidade);
-                    printf("Valor em Estoque: R$%.2f\n", total);
+                if (quantidadeProdutos == 0) {
+                    printf("Nenhum produto cadastrado.\n");
+                    break;
                 }
-                */
-                
-				option = 6;
-                break;
 
-            case 4:
+                for (int i = 0; i < quantidadeProdutos; i++) {
+                    printf("\nProduto: %s\n", produtos[i].nome);
+                    printf("Codigo: %d\n", produtos[i].codigo);
+                    printf("Preco: R$ %.2f\n", produtos[i].preco);
+                    printf("Quantidade: %d\n", produtos[i].quantidade);
+                    printf(
+                        "Valor em Estoque: R$ %.2f\n",
+                        produtos[i].valorTotal
+                    );
+
+                    if (produtos[i].quantidade == 0) {
+                        printf("ESTOQUE ESGOTADO\n");
+                    } else if (produtos[i].quantidade <= 5) {
+                        printf("ESTOQUE BAIXO\n");
+                    } else {
+                        printf("ESTOQUE NORMAL\n");
+                    }
+                }
+
+                break;
+            }
+
+            case 4: {
+                float totalEstoque = 0;
+
                 printf("\n====================\n");
-                printf(" TOTAL ESTOQUE \n");
+                printf("TOTAL ESTOQUE\n");
                 printf("====================\n");
 
-                //float totalEstoque = total1;
-                //printf("\nValor Total em Estoque: R$%.2f\n", totalEstoque);
+                if (quantidadeProdutos == 0) {
+                    printf("Nenhum produto cadastrado.\n");
+                    break;
+                }
 
-				option = 6;
+                for (int i = 0; i < quantidadeProdutos; i++) {
+                    totalEstoque =
+                        totalEstoque + produtos[i].valorTotal;
+                }
+
+                printf(
+                    "\nValor Total em Estoque: R$ %.2f\n",
+                    totalEstoque
+                );
+
                 break;
+            }
 
             case 5:
-                printf("\n SAIDA \n");
-                option = 0;
+                printf("\n====================\n");
+                printf("SAIDA\n");
+                printf("====================\n");
+                printf("Programa encerrado.\n");
+                break;
+
+            default:
+                printf("\nOpcao invalida!\n");
+                printf("Escolha uma opcao de 1 a 5.\n");
                 break;
         }
     }

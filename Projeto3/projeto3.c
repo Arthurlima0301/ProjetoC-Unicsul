@@ -136,15 +136,31 @@ void verificarEstoque(struct Produto produtos[], int quantidadeProdutos)
             printf("ESTOQUE NORMAL\n");
         }
     }
-    
+
     return;
 }
 
 /**
  * Calcular Valor do Estoque
  */
-void valorEstoque()
+void valorEstoque(struct Produto produtos[], int quantidadeProdutos)
 {
+
+    float totalEstoque = 0;
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+        totalEstoque = totalEstoque + produtos[i].valorTotal;
+    }
+
+    printf("\nValor Total em Estoque: R$ %.2f\n", totalEstoque);
+
+    return;
 }
 
 /**
@@ -208,28 +224,21 @@ int main()
         }
         case 4:
         {
-            float totalEstoque = 0;
             printf("\n====================\n");
             printf("TOTAL ESTOQUE\n");
             printf("====================\n");
-            if (quantidadeProdutos == 0)
-            {
-                printf("Nenhum produto cadastrado.\n");
-                break;
-            }
-            for (int i = 0; i < quantidadeProdutos; i++)
-            {
-                totalEstoque = totalEstoque + produtos[i].valorTotal;
-            }
-            printf("\nValor Total em Estoque: R$ %.2f\n", totalEstoque);
+
+            valorEstoque(produtos, quantidadeProdutos);
             break;
         }
         case 5:
             printf("\n====================\n");
             printf("SAIDA\n");
             printf("====================\n");
+
             printf("Programa encerrado.\n");
             break;
+
         default:
             printf("\nOpcao invalida!\n");
             printf("Escolha uma opcao de 1 a 5.\n");

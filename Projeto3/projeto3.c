@@ -76,7 +76,33 @@ void cadastrarProduto(struct Produto produtos[], int *quantidadeProdutos)
 /**
  *  Consultar Produto
  */
-void consultarProduto() {}
+void consultarProduto(struct Produto produtos[], int quantidadeProdutos)
+{
+    int codigoConsulta;
+    bool produtoEncontrado = false;
+
+    printf("Digite o codigo do produto: ");
+    scanf("%d", &codigoConsulta);
+
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+
+        if (codigoConsulta == produtos[i].codigo)
+        {
+            printf("Nome: %s\n", produtos[i].nome);
+            printf("Codigo: %d\n", produtos[i].codigo);
+            printf("Preco: %.2f\n", produtos[i].preco);
+            printf("Quantidade: %d\n", produtos[i].quantidade);
+            printf("Valor total: %.2f\n", produtos[i].valorTotal);
+            produtoEncontrado = true;
+        }
+    }
+
+    if (produtoEncontrado == false)
+    {
+        printf("Produto Nao encontrado!\n");
+    }
+}
 
 /**
  *  Listar Produtos
@@ -135,31 +161,7 @@ int main()
             printf("CONSULTAR PRODUTO\n");
             printf("====================\n");
 
-            int codigoConsulta;
-            bool produtoEncontrado = false;
-
-            printf("Digite o codigo do produto: ");
-            scanf("%d", &codigoConsulta);
-
-            for (int i = 0; i < quantidadeProdutos; i++)
-            {
-
-                if (codigoConsulta == produtos[i].codigo)
-                {
-                    printf("Nome: %s\n", produtos[i].nome);
-                    printf("Codigo: %d\n", produtos[i].codigo);
-                    printf("Preco: %.2f\n", produtos[i].preco);
-                    printf("Quantidade: %d\n", produtos[i].quantidade);
-                    printf("Valor total: %.2f\n", produtos[i].valorTotal);
-                    produtoEncontrado = true;
-                }
-            }
-
-            if (produtoEncontrado == false)
-            {
-                printf("Produto Nao encontrado!\n");
-            }
-
+            consultarProduto(produtos, quantidadeProdutos);
             break;
 
         case 3:

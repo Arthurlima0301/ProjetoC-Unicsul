@@ -193,8 +193,31 @@ void consultarProduto(struct Produto produtos[], int quantidadeProdutos)
     }
 }
 
+
 /**
- *  Listar Produtos
+ * Listar Produtos
+ */
+void listarProdutos(struct Produto produtos[], int quantidadeProdutos)
+{
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+        printf("\nProduto: %s\n", produtos[i].nome);
+        printf("Codigo: %d\n", produtos[i].codigo);
+        printf("Preco: R$ %.2f\n", produtos[i].preco);
+        printf("Quantidade: %d\n", produtos[i].quantidade);
+        printf("Valor em Estoque: R$ %.2f\n", produtos[i].valorTotal);
+    }
+}
+
+
+/**
+ *  Verificar estoque
  */
 void verificarEstoque(struct Produto produtos[], int quantidadeProdutos)
 {
@@ -251,6 +274,150 @@ void valorEstoque(struct Produto produtos[], int quantidadeProdutos)
 
     return;
 }
+
+/**
+ * Mostrar Produto de Maior Valor em Estoque
+ */
+void maiorValorEstoque(struct Produto produtos[], int quantidadeProdutos)
+{
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    int indiceMaior = 0;
+
+    for (int i = 1; i < quantidadeProdutos; i++)
+    {
+        if (produtos[i].valorTotal > produtos[indiceMaior].valorTotal)
+        {
+            indiceMaior = i;
+        }
+    }
+
+    printf("\nProduto de Maior Valor em Estoque\n");
+    printf("Nome: %s\n", produtos[indiceMaior].nome);
+    printf("Codigo: %d\n", produtos[indiceMaior].codigo);
+    printf("Preco: R$ %.2f\n", produtos[indiceMaior].preco);
+    printf("Quantidade: %d\n", produtos[indiceMaior].quantidade);
+    printf("Valor Total: R$ %.2f\n", produtos[indiceMaior].valorTotal);
+} 
+
+
+/**
+ * Produto de Menor Valor em Estoque
+ */
+void produtoMenorValor(struct Produto produtos[], int quantidadeProdutos)
+{
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    int menor = 0;
+
+    for (int i = 1; i < quantidadeProdutos; i++)
+    {
+        if (produtos[i].valorTotal < produtos[menor].valorTotal)
+        {
+            menor = i;
+        }
+    }
+
+    printf("\nProduto de Menor Valor em Estoque\n");
+    printf("Nome: %s\n", produtos[menor].nome);
+    printf("Codigo: %d\n", produtos[menor].codigo);
+    printf("Preco: R$ %.2f\n", produtos[menor].preco);
+    printf("Quantidade: %d\n", produtos[menor].quantidade);
+    printf("Valor Total: R$ %.2f\n", produtos[menor].valorTotal);
+}
+
+/**
+ * Excluir Produto
+ */
+void excluirProduto(struct Produto produtos[], int *quantidadeProdutos)
+{
+    int codigoExclusao;
+    int posicao = -1;
+    char confirmacao;
+
+    if (*quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    printf("Digite o codigo do produto a ser excluido: ");
+    scanf("%d", &codigoExclusao);
+
+    for (int i = 0; i < *quantidadeProdutos; i++)
+    {
+        if (codigoExclusao == produtos[i].codigo)
+        {
+            posicao = i;
+            break;
+        }
+    }
+
+    if (posicao == -1)
+    {
+        printf("Produto Nao encontrado!\n");
+        return;
+    }
+
+    printf("Produto: %s | Codigo: %d\n", produtos[posicao].nome, produtos[posicao].codigo);
+    printf("Deseja realmente excluir? (S/N): ");
+    scanf(" %c", &confirmacao);
+
+    if (confirmacao != 'S' && confirmacao != 's')
+    {
+        printf("Exclusao cancelada.\n");
+        return;
+    }
+
+    for (int i = posicao; i < *quantidadeProdutos - 1; i++)
+    {
+        produtos[i] = produtos[i + 1];
+    }
+
+    (*quantidadeProdutos)--;
+
+    printf("Produto excluido com sucesso!\n");
+}
+
+
+/**
+* arthur ORDERNAR PRODUTOS
+*/
+void ordenarProdutos(struct Produto produtos[], int quantidadeProdutos)
+{
+    struct Produto auxiliar;
+
+    if (quantidadeProdutos == 0)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidadeProdutos - 1; i++)
+    {
+        for (int j = 0; j < quantidadeProdutos - 1 - i; j++)
+        {
+            if (produtos[j].codigo > produtos[j + 1].codigo)
+            {
+                auxiliar = produtos[j];
+                produtos[j] = produtos[j + 1];
+                produtos[j + 1] = auxiliar;
+            }
+        }
+    }
+
+    printf("Produtos ordenados com sucesso!\n");
+}
+
+
 
 /**
  * Salvar Produtos
@@ -334,7 +501,12 @@ int main()
         printf("2 - Listar Produtos\n");
         printf("3 - Consultar Produtos\n");
         printf("4 - Alterar Produtos\n");
+        printf("5 - Excluir produto\n");
+        printf("6 - Verificar Estoque\n");
         printf("7 - Calcular Total Estoque\n");
+        printf("8 - Mostrar Produto de Maior Valor\n");
+        printf("9 - Mostrar Produto de Menor Valor\n");
+        printf("10 - Ordenar Produtos\n");
         printf("11 - Salvar Produtos\n");
         printf("12 - Carregar Produtos\n");
         printf("13 - Sair\n");
@@ -352,13 +524,15 @@ int main()
 
             cadastrarProduto(produtos, &quantidadeProdutos);
             break;
+        
         case 2:
             printf("\n====================\n");
             printf("LISTAR PRODUTOS\n");
             printf("====================\n");
 
-            verificarEstoque(produtos, quantidadeProdutos);
+            listarProdutos(produtos, quantidadeProdutos);
             break;
+
 
         case 3:
             printf("\n====================\n");
@@ -374,13 +548,64 @@ int main()
             printf("====================\n");
 
             alterarProduto(produtos, &quantidadeProdutos);
-            break;     
+            break;    
+            
+        case 5:
+            printf("\n====================\n");
+            printf("EXCLUIR PRODUTO\n");
+            printf("====================\n");
+
+            excluirProduto(produtos, &quantidadeProdutos);
+            break;
+
+        case 6:
+            printf("\n====================\n");
+            printf("VERIFICAR ESTOQUE\n");
+            printf("====================\n");
+
+            verificarEstoque(produtos, quantidadeProdutos);
+            break;    
+        
+            
+            
         case 7:
             printf("\n====================\n");
             printf("TOTAL DO ESTOQUE \n");
             printf("\n====================\n");
             valorEstoque(produtos, quantidadeProdutos);
             break;
+        
+        case 8:
+            printf("\n====================\n");
+            printf("PRODUTO DE MAIOR VALOR \n");
+            printf("\n====================\n");
+            maiorValorEstoque(produtos, quantidadeProdutos);
+            break;    
+
+        case 9:
+            printf("\n====================\n");
+            printf("PRODUTO DE MENOR VALOR \n");
+            printf("\n====================\n");
+            produtoMenorValor(produtos, quantidadeProdutos);
+            break;  
+
+        case 10:
+            printf("\n====================\n");
+            printf("ORDENAR PRODUTOS\n");
+            printf("====================\n");
+
+            // Chama a funcao Bubble Sort.
+            ordenarProdutos(produtos, quantidadeProdutos);
+
+            // Exibe os produtos na ordem correta.
+            if (quantidadeProdutos > 0)
+            {
+                verificarEstoque(produtos, quantidadeProdutos);
+            }
+
+            break;
+
+
 
         case 11:
         
@@ -409,7 +634,7 @@ int main()
 
         default:
             printf("\nOpcao invalida!\n");
-            printf("Escolha uma opcao de 1 a 7.\n");
+            printf("Escolha uma opcao de 1 a 13.\n");
             break;
         }
     }
